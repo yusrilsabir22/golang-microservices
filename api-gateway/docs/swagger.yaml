@@ -1,0 +1,9 @@
+basePath: /auth
+host: localhost:3000
+info:
+  contact: {}
+  description: API in go using Gin framework
+  title: API Service
+  version: "1.0"
+paths: {}
+swagger: "2.0"

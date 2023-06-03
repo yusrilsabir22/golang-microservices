@@ -1,0 +1,141 @@
+definitions:
+  pb.ClaimResponse:
+    properties:
+      standardClaims:
+        $ref: '#/definitions/pb.StandardClaims'
+      userId:
+        type: string
+    type: object
+  pb.LoginRequest:
+    properties:
+      msisdn:
+        type: string
+      password:
+        type: string
+    type: object
+  pb.LoginResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+      token:
+        type: string
+    type: object
+  pb.RegisterRequest:
+    properties:
+      msisdn:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  pb.RegisterResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  pb.StandardClaims:
+    properties:
+      audience:
+        type: string
+      expiresAt:
+        type: integer
+      id:
+        type: string
+      issuedAt:
+        type: integer
+      issuer:
+        type: string
+      notBefore:
+        type: integer
+      subject:
+        type: string
+    type: object
+  pb.ValidateResponse:
+    properties:
+      data:
+        $ref: '#/definitions/pb.ClaimResponse'
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      description: Check user data at DB and generate token
+      parameters:
+      - description: Login User
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/pb.LoginRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.LoginResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/pb.LoginResponse'
+      summary: Login user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      description: Save user data in DB
+      parameters:
+      - description: Register User
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/pb.RegisterRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.RegisterResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/pb.LoginResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/pb.LoginResponse'
+      summary: Register user
+      tags:
+      - Auth
+  /auth/validate:
+    post:
+      description: Validate the token and return claims data
+      parameters:
+      - description: Authrization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.ValidateResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/pb.ValidateResponse'
+      summary: Get private claims data of the token
+      tags:
+      - Auth
+swagger: "2.0"

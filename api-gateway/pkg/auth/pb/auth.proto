@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "./pkg/auth/pb";
+
+
+service AuthService {
+    rpc Validate(ValidateRequest) returns (ValidateResponse) {}
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+}
+
+message StandardClaims {
+    string audience  = 1;
+	int64  expiresAt = 2;
+	string id        = 3;
+	int64  issuedAt  = 4;
+	string issuer    = 5;
+	int64  notBefore = 6;
+	string subject   = 7;
+}
+
+message ClaimResponse {
+    string userId = 1;
+    StandardClaims standardClaims = 2; 
+}
+
+message ValidateRequest {string token = 1;}
+
+message ValidateResponse {
+    int64 status = 1;
+    string message = 2;
+    ClaimResponse data = 3;
+}
+
+message RegisterRequest {
+    string msisdn = 1;
+    string name = 2;
+    string username = 3;
+    string password = 4;
+}
+
+message RegisterResponse {
+    int64 status = 1;
+    string message = 2;
+    string userId = 3;
+}
+
+message LoginRequest {
+    string msisdn = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    int64 status = 1;
+    string message = 2;
+    string token = 3;
+}

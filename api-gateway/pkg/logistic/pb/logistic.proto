@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package logistic;
+
+option go_package = "./pkg/logistic/pb";
+
+
+
+service LogisticService {
+    rpc CreateLogistic(CreateLogisticRequest) returns (CreateLogisticResponse) {}
+    rpc FindOne(FindOneLogisticRequest) returns (FindOnLogisticResponse) {}
+}
+
+message CreateLogisticRequest {
+    string logisticName = 1;
+    int64 amount = 2;
+    string destinationName = 3;
+    string originName = 4;
+    string duration = 5;
+}
+
+message CreateLogisticResponse {
+    int64 status = 1;
+    string message = 2;
+}
+
+message FindOneData {
+    string logisticName = 1;
+    int64 amount = 2;
+    string destinationName = 3;
+    string originName = 4;
+    string duration = 5;
+}
+
+message FindOneLogisticRequest {
+    string destinationName = 1;
+    string originName = 2;
+}
+
+message FindOnLogisticResponse {
+    int64 status = 1;
+    string message = 2;
+    FindOneData data = 3;
+}
